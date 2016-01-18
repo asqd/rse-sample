@@ -11,15 +11,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150922131922) do
+ActiveRecord::Schema.define(version: 20151222104914) do
 
   create_table "buildings", force: :cascade do |t|
     t.string   "name"
-    t.boolean  "isBrand"
+    t.boolean  "is_brand"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "ancestry"
+    t.datetime "deleted_at"
   end
+
+  add_index "buildings", ["deleted_at"], name: "index_buildings_on_deleted_at"
+
+  create_table "deal_infos", force: :cascade do |t|
+    t.boolean  "for_rent",           default: true
+    t.boolean  "for_sale",           default: false
+    t.string   "state",              default: "free"
+    t.integer  "deal_infoable_id"
+    t.string   "deal_infoable_type"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.datetime "deleted_at"
+  end
+
+  add_index "deal_infos", ["deleted_at"], name: "index_deal_infos_on_deleted_at"
+
+  create_table "offers", force: :cascade do |t|
+    t.float    "cost"
+    t.integer  "deal_info_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.datetime "deleted_at"
+  end
+
+  add_index "offers", ["deleted_at"], name: "index_offers_on_deleted_at"
 
   create_table "rooms", force: :cascade do |t|
     t.string   "type"
@@ -27,6 +53,9 @@ ActiveRecord::Schema.define(version: 20150922131922) do
     t.integer  "building_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.datetime "deleted_at"
   end
+
+  add_index "rooms", ["deleted_at"], name: "index_rooms_on_deleted_at"
 
 end
