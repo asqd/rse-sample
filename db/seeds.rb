@@ -49,8 +49,10 @@ rooms = [
 ]
 if Room.count.eql?(0)
   puts "Creating Rooms"
+  building_ids = Building.pluck(:id)
   rooms.each do |room|
     puts "#{room[:type]}"
-    r = Room.create area: room[:area], type: room[:type]
+    r = Room.create area: room[:area], type: room[:type], building_id: building_ids.sample
+    DealInfo.create deal_infoable: r, offers_attributes: [{cost: (1000..5000).to_a.sample / 100 * 100 }]
   end
 end
